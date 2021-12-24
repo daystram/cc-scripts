@@ -3,6 +3,9 @@ FUEL_TRESHOLD = 400
 init = true
 START_CLK = os.clock()
 
+BLOCK_ID_LOG = "minecraft:jungle_log"
+BLOCK_ID_SAPLING = "minecraft:jungle_sapling"
+
 function refuel(qty)
     turtle.select(SLOT_FUEL)
     local fuel = turtle.refuel(qty)
@@ -110,7 +113,7 @@ function check_sapling()
     turtle.select(SLOT_LOG)
     for slot = SLOT_SAPLING + 1, 16 do
         turtle.select(slot)
-        if turtle.getItemCount() > 0 and turtle.getItemDetail().name == "minecraft:sapling" then
+        if turtle.getItemCount() > 0 and turtle.getItemDetail().name == BLOCK_ID_SAPLING then
             turtle.dropDown()
         end
     end
@@ -119,24 +122,21 @@ end
 
 function check_tree()
     io.write("[D] Checking tree... ")
-    turtle.dig()
-    turtle.forward()
     local has_block, data = turtle.inspect()
     if has_block then
-        if data.name == "minecraft:log" then
-            chop_tree()
+        if data.name == BLOCK_ID_LOG then
+            chop_tree()BLOCK_ID_SAPLING = "minecraft:"
             io.write("CUT ")
             if plant_tree() then io.write("PLANT") else io.write("NOSAP") end
         elseif data.name == "minecraft:sapling" then
             io.write("OK")
         else
-            io.write("ERR(" .. data.name .. ")")
+            io.write("ERR (unexpected block: " .. data.name .. ")")
         end
     else
         if plant_tree() then io.write("PLANT") else io.write("NOSAP") end
     end
     print("")
-    turtle.back()
 end
 
 function check_home()
@@ -155,22 +155,28 @@ function check_home()
     return true
 end
 
+-- move_out() moves the turtle right beside the bottom of the tree log or sapling
 function move_out()
-    turtle.dig()
-    turtle.forward()
-    turtle.digUp()
-    turtle.up()
-    turtle.digUp()
-    turtle.up()
-    turtle.dig()
-    turtle.forward()
+    local has_block, data = turtle.inspect()
+    while !has_block or not (data.name == BLOCK_ID_LOG or data.name == BLOCK_ID_SAPLING) do
+        turtle.dig()
+        turtle.forward()
+        has_block, data = turtle.inspectDown()
+        if has_block and data.name == "minecraft:dirt" then
+            turtle.back()
+            break
+        end
+        has_block, data = turtle.inspect()
+    end
 end
 
+-- move_in() moves the turtle back home
 function move_in()
-    turtle.back()
-    turtle.down()
-    turtle.down()
-    turtle.back()
+    local has_block, data = turtle.inspectUp()
+    while !has_block or data.name ~= "minecraft:furnace" do
+        turtle.back()
+        has_block, data = turtle.inspect()
+    end
 end
 
 function make_charcoal(qty)
@@ -208,7 +214,7 @@ function time()
 end
 
 function main()
-    print("[" .. time() .. "] ----- Auto Tree v03g -----")
+    print("[" .. time() .. "] ----- Auto Tree v04a -----")
     print("[I] Insert fuel into Slot 1!")
     print("[I] Insert sapling into left chest!")
     if not check_home() then
@@ -227,8 +233,8 @@ function main()
 
         move_out()
         check_tree()
-        clear_inventory()
         move_in()
+        clear_inventory()
         
         sleep(60)
     end
