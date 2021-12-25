@@ -158,7 +158,7 @@ end
 -- move_out() moves the turtle right beside the bottom of the tree log or sapling
 function move_out()
     local has_block, data = turtle.inspect()
-    while !has_block or not (data.name == BLOCK_ID_LOG or data.name == BLOCK_ID_SAPLING) do
+    while not has_block or not (data.name == BLOCK_ID_LOG or data.name == BLOCK_ID_SAPLING) do
         turtle.dig()
         turtle.forward()
         has_block, data = turtle.inspectDown()
@@ -173,7 +173,7 @@ end
 -- move_in() moves the turtle back home
 function move_in()
     local has_block, data = turtle.inspectUp()
-    while !has_block or data.name ~= "minecraft:furnace" do
+    while not has_block or data.name ~= "minecraft:furnace" do
         turtle.back()
         has_block, data = turtle.inspect()
     end
