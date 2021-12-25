@@ -2,9 +2,9 @@ SLOT_FUEL, SLOT_CACTUS, SLOT_COAL = 1, 2
 FUEL_TRESHOLD = 200
 START_CLK = os.clock()
 
-MODE = "" -- select one: [MODE_CACTUS, MODE_COAL]
 MODE_CACTUS = "cactus"
 MODE_COAL = "coal"
+MODE = "" -- select one: [MODE_CACTUS, MODE_COAL]
 
 function time()
     return string.format("%.2f", os.clock() - START_CLK)
@@ -13,7 +13,6 @@ end
 function refuel(qty)
     turtle.select(SLOT_FUEL)
     local fuel = turtle.refuel(qty)
-    turtle.select(SLOT_LOG)
     return fuel
 end
 
