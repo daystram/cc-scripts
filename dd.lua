@@ -4,6 +4,7 @@ local gists = {
     autotree = "https://raw.githubusercontent.com/daystram/cc-scripts/main/autotree.lua",
     autofarm = "https://raw.githubusercontent.com/daystram/cc-scripts/main/autofarm.lua",
     automob = "https://raw.githubusercontent.com/daystram/cc-scripts/main/automob.lua",
+    autoxp = "https://raw.githubusercontent.com/daystram/cc-scripts/main/autoxp.lua",
     master = "https://raw.githubusercontent.com/daystram/cc-scripts/main/master.lua",
     devmaster = "https://raw.githubusercontent.com/daystram/cc-scripts/main/devmaster.lua",
     devslave = "https://raw.githubusercontent.com/daystram/cc-scripts/main/devslave.lua"
