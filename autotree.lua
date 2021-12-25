@@ -125,10 +125,10 @@ function check_tree()
     local has_block, data = turtle.inspect()
     if has_block then
         if data.name == BLOCK_ID_LOG then
-            chop_tree()BLOCK_ID_SAPLING = "minecraft:"
+            chop_tree()
             io.write("CUT ")
             if plant_tree() then io.write("PLANT") else io.write("NOSAP") end
-        elseif data.name == "minecraft:sapling" then
+        elseif data.name == BLOCK_ID_SAPLING then
             io.write("OK")
         else
             io.write("ERR (unexpected block: " .. data.name .. ")")
@@ -158,7 +158,7 @@ end
 -- move_out() moves the turtle right beside the bottom of the tree log or sapling
 function move_out()
     local has_block, data = turtle.inspect()
-    while not has_block or not (data.name == BLOCK_ID_LOG or data.name == BLOCK_ID_SAPLING) do
+    while not has_block or (data.name ~= BLOCK_ID_LOG and data.name ~= BLOCK_ID_SAPLING) do
         turtle.dig()
         turtle.forward()
         has_block, data = turtle.inspectDown()
@@ -175,7 +175,7 @@ function move_in()
     local has_block, data = turtle.inspectUp()
     while not has_block or data.name ~= "minecraft:furnace" do
         turtle.back()
-        has_block, data = turtle.inspect()
+        has_block, data = turtle.inspectUp()
     end
 end
 
