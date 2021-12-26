@@ -67,7 +67,7 @@ function fill_coal()
     turtle.turnLeft()
     local has_block, data = turtle.inspect()
     while has_block and data.name == "minecraft:furnace" do
-        turtle.drop(16)
+        turtle.drop(1)
         turtle.turnRight()
         turtle.forward()
         turtle.turnLeft()
@@ -82,7 +82,7 @@ function fill_coal()
 end
 
 function main()
-    print("[" .. time() .. "] ----- Auto XP v01b -----")
+    print("[" .. time() .. "] ----- Auto XP v01c -----")
     if MODE == "" then
         print("[E] Select mode!")
         return
