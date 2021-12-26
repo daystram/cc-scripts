@@ -1,4 +1,4 @@
-SLOT_FUEL, SLOT_CACTUS, SLOT_COAL = 1, 2
+SLOT_FUEL, SLOT_CACTUS, SLOT_COAL = 1, 2, 2
 FUEL_TRESHOLD = 200
 START_CLK = os.clock()
 
@@ -27,12 +27,12 @@ function check_fuel()
                 if MODE == MODE_CACTUS then
                     turtle.turnRight()
                     turtle.select(SLOT_FUEL)
-                    turtle.suck()
+                    turtle.suck(64 - turtle.getItemCount(SLOT_FUEL))
                     turtle.turnLeft()
                 end
                 if MODE == MODE_COAL then
                     turtle.select(SLOT_FUEL)
-                    turtle.suckUp()
+                    turtle.suckUp(64 - turtle.getItemCount(SLOT_FUEL))
                 end
             end
         end
@@ -43,7 +43,7 @@ end
 
 function fill_cactus()
     turtle.select(SLOT_CACTUS)
-    turtle.suckUp()
+    turtle.suckUp(64 - turtle.getItemCount(SLOT_CACTUS))
     local dist = 0
     turtle.forward()
     local has_block, data = turtle.inspectDown()
@@ -53,7 +53,7 @@ function fill_cactus()
         dist = dist + 1
         has_block, data = turtle.inspectDown()
     end
-    for i = 1, distance do
+    for i = 1, dist do
         turtle.back()
     end
     turtle.back()
@@ -61,7 +61,7 @@ end
 
 function fill_coal()
     turtle.select(SLOT_COAL)
-    turtle.suckUp()
+    turtle.suckUp(64 - turtle.getItemCount(SLOT_COAL))
     local dist = 0
     turtle.forward()
     turtle.turnLeft()
@@ -75,14 +75,14 @@ function fill_coal()
         has_block, data = turtle.inspect()
     end
     turtle.turnRight()
-    for i = 1, distance do
+    for i = 1, dist do
         turtle.back()
     end
     turtle.back()
 end
 
 function main()
-    print("[" .. time() .. "] ----- Auto XP v01a -----")
+    print("[" .. time() .. "] ----- Auto XP v01b -----")
     if MODE == "" then
         print("[E] Select mode!")
         return
@@ -95,14 +95,12 @@ function main()
         print("[" .. time() .. "] ---")
         check_fuel()
 
-        move_out()
         if MODE == MODE_CACTUS then
             fill_cactus()
         end
         if MODE == MODE_COAL then
             fill_coal()
         end
-        move_in()
         
         sleep(10)
     end
